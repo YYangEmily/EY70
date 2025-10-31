@@ -1,0 +1,74 @@
+---
+title: "EY70"
+author: "Emily Yang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+
+df <- read_excel("~/Documents/Experiments/10.27.25 EY70 Read 2.xlsx", 
+    sheet = "Lum")
+
+```
+
+```{r Lum}
+
+newdf <- df %>% filter_all(any_vars(!is.na(.)))
+
+A12 <-aggregate(A12 ~ ID, data = newdf, max)
+C12 <-aggregate(C12 ~ ID, data = newdf, max)
+E12 <-aggregate(E12 ~ ID, data = newdf, max)
+G12 <-aggregate(G12 ~ ID, data = newdf, max)
+A1 <-aggregate(A1 ~ ID, data = newdf, max)
+A3 <-aggregate(A3 ~ ID, data = newdf, max)
+A5 <-aggregate(A5 ~ ID, data = newdf, max)
+C1 <-aggregate(C1 ~ ID, data = newdf, max)
+C3 <-aggregate(C3 ~ ID, data = newdf, max)
+C5 <-aggregate(C5 ~ ID, data = newdf, max)
+E1 <-aggregate(E1 ~ ID, data = newdf, max)
+E3 <-aggregate(E3 ~ ID, data = newdf, max)
+E5 <-aggregate(E5 ~ ID, data = newdf, max)
+
+
+Maxes <- cbind(A12$A12,C12$C12,E12$E12,G12$G12,A1$A1,A3$A3,A5$A5,C1$C1,C3$C3,C5$C5,E1$E1,E3$E3,E5$E5)
+colnames(Maxes) <- c('A12','C12','E12','G12','A1','A3','A5','C1','C3','C5','E1','E3','E5')
+
+Hours<- c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)
+          
+h <- cbind(Maxes, Hours)
+h<-as.data.frame(h)
+
+h <- h %>% 
+  mutate_at(c('A12','C12','E12','G12','A1','A3','A5','C1','C3','C5','E1','E3','E5','Hours'), as.numeric)
+
+```
+
+```{r}
+#colors <- c("steelblue" = "steelblue","black" = "black")
+
+p <- ggplot(h, aes(x=Hours)) + 
+  geom_line(aes(y = A1), color="steelblue",size = 1) + 
+  geom_line(aes(y = A3), color="steelblue",size = 1) + 
+  geom_line(aes(y = A5), color="steelblue",size = 1) + 
+  geom_line(aes(y = C1), color="steelblue",size = 1) +
+  geom_line(aes(y = C3), color="steelblue",size = 1) +
+  geom_line(aes(y = C5), color="steelblue",size = 1) +
+  geom_line(aes(y = E1), color="steelblue",size = 1) + 
+  geom_line(aes(y = E3), color="steelblue",size = 1) + 
+  geom_line(aes(y = E5), color="steelblue",size = 1) +
+  geom_line(aes(y = G12), color="black",size = 1) + 
+  geom_line(aes(y = A12), color="black",size = 1) + 
+  geom_line(aes(y = C12), color="black",size = 1)+
+  geom_line(aes(y = E12), color="black",size = 1)+
+  labs(title="104 iLUX Kan P. rettgeri",
+        x ="Time (hours)", y = "Luminescence (AU)", color = "Legend")+ #+ scale_color_manual(values = colors)
+ theme_grey(base_size = 20)
+
+p
+#ggsave("104Seminar.png")
+```
