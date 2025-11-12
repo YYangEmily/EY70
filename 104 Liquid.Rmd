@@ -1,0 +1,58 @@
+---
+title: "104 Dilutions"
+author: "Emily Yang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+
+df <- read_excel("~/Documents/Experiments/11.4.25 ilux pret.xlsx", 
+    sheet = "Lum")
+df1 <- read_excel("~/Documents/Experiments/11.6.25 102 P.ret Liq.xlsx", 
+    sheet = "Lum")
+```
+
+```{r}
+
+p <- ggplot(df, aes(x=OD)) + 
+  geom_point(aes(y = A), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = B), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = C), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = D), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = E), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = F), color="darkred", size=3, alpha = 0.5)+
+  geom_point(aes(y = G), color="darkred", size=3, alpha = 0.5)+
+  scale_y_log10()+scale_x_log10()+
+labs(title="104 iLUX",
+        x ="Optical Density", y = "Luminescence (AU)")+
+ theme_grey(base_size = 20)
+p
+#ggsave("104Liquid.png")
+
+```
+
+```{r}
+
+p <- ggplot(df1, aes(x=OD)) + 
+  geom_point(aes(y = A), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = B), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = C), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = D), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = E), color="darkred", size=3, alpha = 0.5) + 
+  geom_point(aes(y = F), color="darkred", size=3, alpha = 0.5)+
+  geom_point(aes(y = G), color="darkred", size=3, alpha = 0.5)+
+  scale_y_log10()+scale_x_log10()+
+labs(title="102 iLUX",
+        x ="Optical Density", y = "Luminescence (AU)")+
+ theme_grey(base_size = 20)
+p
+#ggsave("102Liquid.png")
+
+```
+
