@@ -101,9 +101,9 @@ p3
 
 
 ```{r}
-sp <- ggplot(g, aes(x = CFU, y = Lum, colour = OD))+ 
-  scale_y_log10()+scale_x_log10()+
-  geom_point(size=2.5) +  xlab("CFU/Fly") + ylab("Luminescence (AU)")
+sp <- ggplot(h, aes(x = Plate, y = glow, color= Time))+ 
+  geom_jitter(width=0.2, height=0.2) +  xlab("Plate Type") + ylab("Percent glowing")
+  
 sp + theme(
 axis.title.x = element_text(size=14, face="bold"),
 axis.title.y = element_text(size=18, face="bold"),
@@ -111,13 +111,12 @@ axis.text.x = element_text(face="bold", size=18),
 axis.text.y = element_text(face="bold",size=18),
 legend.text=element_text(size=18, face='bold'))
 
-#ggsave("whole.png")
+#ggsave("Glow.png")
 ```
 
 ```{r}
-sp <- ggplot(h, aes(x = CFU, y = Lum, colour = Time))+ 
-  scale_y_log10()+scale_x_log10()+
-  geom_point(size=2.5) +  xlab("CFU/Fly") + ylab("Luminescence (AU)")
+sp <- ggplot(g, aes(x = T2, y = Lum/CFU, color= Color))+ 
+  geom_point(size=2.5) +  xlab("Hour") + ylab("Lum/CFU")
 sp + theme_grey(base_size = 20)
 
 #ggsave("half.png")
