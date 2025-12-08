@@ -1,0 +1,33 @@
+---
+title: "Dilution Plating"
+author: "Emily Yang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+
+df <- read_excel("~/Documents/Experiments/Dilution Plating.xlsx", 
+    sheet = "Sheet1")
+
+```
+
+```{r}
+sp <- ggplot(df, aes(x =CFU, y =Lum, color= OD))+ 
+  geom_point(size=1) +
+ xlab("CFU/Fly") + ylab("Luminescence")+ xlim(0,500000)
+  
+sp + theme(
+axis.title.x = element_text(size=14, face="bold"),
+axis.title.y = element_text(size=18, face="bold"),
+axis.text.x = element_text(face="bold", size=18),
+axis.text.y = element_text(face="bold",size=18),
+legend.text=element_text(size=18, face='bold'))
+
+#ggsave("CLhalf.png")
+```
