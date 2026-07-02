@@ -52,6 +52,38 @@ h <- h %>%
 
 ```
 
+
+```{r}
+df1<- df %>%
+pivot_longer(cols=setdiff(colnames(df), c("ID", "Position")), names_to = "Fly", values_to ="Brightness")
+
+newdf1 <- df1 %>%
+  group_by(ID, Fly) %>%
+  summarize(max_bright = max(Brightness)) %>%
+  ungroup()
+newdf1
+
+output <- tibble(Fly=NULL, ID = NULL, Position = NULL)
+for (i in c(1:nrow(df1))) {
+  lab <- df1$ID[i] 
+  fly <- df1$Fly[i]
+  pos <- df1$Position[i] 
+  brightness <- df1$Brightness[i]
+  max_value <- filter(newdf1, ID == lab & Fly == fly) %>%
+    select(max_bright) %>% pull()
+  if (max_value == brightness) {
+    output <- bind_rows(output, tibble(Fly=fly, ID = lab, Position = pos))
+  }
+}
+
+
+output1<- output %>%
+pivot_wider(id_cols = ID, names_from = Fly, values_from = Position)
+output1
+
+```
+
+
 ```{r}
 #colors <- c("steelblue" = "steelblue","black" = "black")
 
@@ -102,7 +134,7 @@ p3
 
 ```{r}
 sp <- ggplot(h, aes(x = Plate, y = glow, color= Time))+ 
-  geom_jitter(width=0.2, height=0.2) +  xlab("Plate Type") + ylab("Percent glowing")
+  geom_jitter(width=0.2) +  xlab("Plate Type") + ylab("Percent glowing")
   
 sp + theme(
 axis.title.x = element_text(size=14, face="bold"),
